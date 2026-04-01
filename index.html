@@ -86,10 +86,74 @@
       color: #fff;
       display: none;
     }
+    body {
+    font-family: Arial, sans-serif;
+}
+
+/* الحاوية */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+/* الشكل العام */
+.toast {
+    min-width: 250px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: slideIn 0.5s ease;
+}
+
+/* نجاح */
+.toast.success {
+    background-color: #28a745;
+    border-left: 5px solid #1e7e34;
+    display: none;
+}
+
+/* فشل */
+.toast.error {
+    background-color: #dc3545;
+    border-left: 5px solid #a71d2a;
+    display: none;
+}
+
+/* الحركة */
+@keyframes slideIn {
+    from {
+        transform: translateX(-120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
   </style>
 </head>
 
 <body>
+  <div class="toast-container">
+
+    <div class="toast success">
+        ✔ Succes you are dragon
+    </div>
+
+    <div class="toast error">
+        ✖ faild try again 
+    </div>
+
+</div>
+
   <div class="card">
     <h3 id="question"></h3>
     <div id="answers"></div>
@@ -128,6 +192,8 @@
     const aE1 = document.getElementById("answers");
     const nextBtn = document.getElementById("next");
     const retbtn = document.getElementById("retry");
+    const succes=document.getElementsByClassName("success");
+    const faild=document.getElementsByClassName("error");
     function load() {
       nextBtn.style.display = "none";
       aE1.innerHTML = "";
@@ -151,19 +217,27 @@
         if (i == currectindex) {
           b.classList.add("correct");
          
+       
 
         }
         else if (i == index && i !== currectindex) {
           b.classList.add("wrong");
-          
+           
         }
       })
       if (index == currectindex) {
-        score++;
+           score++;
       }
+      if (index === currectindex) {
+    succes[0].style.display = "block";
+} else {
+    faild[0].style.display = "block";
+}
     }
     nextBtn.onclick = () => {
       current++;
+       faild[0].style.display="none";
+       succes[0].style.display="none";
       if (current < questions.length) { load(); }
       else {
         qE1.textContent = `Your score is ${score} of 4`;
@@ -179,11 +253,8 @@
            retbtn.style.display="none"
         load();
        }
-      
     }
-
     load();
-
   </script>
 </body>
 
